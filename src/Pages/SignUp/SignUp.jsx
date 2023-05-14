@@ -28,13 +28,13 @@ const SignUp = () => {
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row gap-24 ">
-        <div className=" w-1/2">
+        <div className=" w-full lg:w-1/2">
           <img
             src="https://raw.githubusercontent.com/AHFahim009/image-resources/bbb1912e956e44ccdd6af9101326179c718d50b4/car-doctor/images/login/login.svg"
             alt=""
           />
         </div>
-        <div className=" w-1/2">
+        <div className="w-full lg:w-1/2">
           <h1 className="text-center text-4xl mb-4">Please Register</h1>
           <div className=" shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <form onSubmit={handleSignUp}>

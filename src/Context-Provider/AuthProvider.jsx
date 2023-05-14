@@ -4,6 +4,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import app from "../Firebase/firebase.confiq";
 
@@ -28,6 +29,12 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  // logout user
+
+  const logOut = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
   // observe user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -46,6 +53,7 @@ const AuthProvider = ({ children }) => {
     loading,
     createUser,
     singIn,
+    logOut,
   };
 
   return (

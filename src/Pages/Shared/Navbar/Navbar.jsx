@@ -1,6 +1,19 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../Context-Provider/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  //----------------------------------------------
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const navItems = (
     <>
       <li>
@@ -9,12 +22,20 @@ const Navbar = () => {
       <li>
         <Link to="/about">About</Link>
       </li>
-      <li>
-        <Link>About</Link>
-      </li>
-      <li>
-        <Link>About</Link>
-      </li>
+      {user?.email ? (
+        <>
+          <li>
+            <Link to="/newbookings">My Bookings</Link>
+          </li>
+          <li>
+            <button onClick={handleLogOut}>Logout</button>
+          </li>
+        </>
+      ) : (
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+      )}
     </>
   );
 
@@ -22,7 +43,7 @@ const Navbar = () => {
     <div className="navbar bg-base-100 h-28 mb-4">
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+          <label tabIndex={0} className="btn btn-ghost md:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -53,7 +74,7 @@ const Navbar = () => {
           />
         </Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden md:flex">
         <ul className="menu menu-horizontal px-1 ">{navItems}</ul>
       </div>
       <div className="navbar-end">
