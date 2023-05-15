@@ -25,7 +25,9 @@ const Checkout = () => {
     };
 
     console.log(booking);
-    //sending this data to created sever site (post) named "/bookings"
+
+    // [ sending booking data to server site "/bookings" &  (res.send) =>  booking]
+
     fetch("http://localhost:5000/bookings", {
       method: "post",
       headers: {

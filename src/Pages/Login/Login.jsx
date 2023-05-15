@@ -1,11 +1,14 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context-Provider/AuthProvider";
 
 const Login = () => {
   //---------------
 
   const { singIn } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -14,17 +17,41 @@ const Login = () => {
     const password = form.password.value;
     console.log(email, password);
 
+    //* [ firebase login with email & password  / when user login successfully send logged user data to server site ("/jwt") for generated token  & (res.send)=> jwt token  / set this token in local storage / finally  navigated redirect location  ]
+
     singIn(email, password)
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        const loggedUser = {
+          email: user.email,
+        };
+        console.log(loggedUser);
+
+        // [sending user data to server site "/jwt" & res.send => token ]
+
+        fetch("http://localhost:5000/jwt", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(loggedUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("jwt response", data);
+
+            // set token data in local storage =>
+            // step 1: setItem
+
+            localStorage.setItem("car-access-token", data.token);
+            navigate(from, { replace: true });
+          });
       })
       .catch((error) => {
         console.log(error);
       });
-
-    // const form = event.target;
   };
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row gap-24 ">
